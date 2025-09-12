@@ -1,9 +1,11 @@
 from fastapi import FastAPI
+from dotenv import load_dotenv
+load_dotenv('.env')
+from routes import base
+
 
 app = FastAPI()
-@app.get("/welcome")
-async def welcome():
-    return {"message": "Welcome to EGRONX-AI"}
+app.include_router(base.base_router)
 
 
 
