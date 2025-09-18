@@ -22,10 +22,12 @@ class OpenAIProvider(LLMInterface):
         self.embedding_model_id = None
         self.embedding_size = None
 
-        self.client = OpenAI(
-            api_key = self.api_key,
-            api_url = self.api_url
-        )
+        # Only pass base_url if it is a full URL with http/https
+        client_kwargs = { "api_key": self.api_key }
+        if self.api_url and (self.api_url.startswith("http://") or self.api_url.startswith("https://")):
+            client_kwargs["base_url"] = self.api_url
+
+        self.client = OpenAI(**client_kwargs)
 
         self.logger = logging.getLogger(__name__)
 
